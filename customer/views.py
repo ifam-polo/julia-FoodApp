@@ -29,5 +29,8 @@ class Order(View):
         }
 
         # render the template/ carrega o template
+        return render(request, 'customer/order.html', context)
 
+    def post(self, request, *args, **kwargs):
+        
 
