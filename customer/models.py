@@ -4,20 +4,20 @@ import datetime
 # Create your models here.
 
 class MenuItem(models.Model):
-    nome = models.CharField(max_length=100)
-    descricao = models.TextField()
-    img = models.ImageField(upload_to='menu_images/')
+    name = models.CharField(max_length=100)
+    description= models.TextField()
+    image = models.ImageField(upload_to='menu_images/')
     price = models.DecimalField(max_digits=5, decimal_places=2)
     category = models.ManyToManyField('Category', related_name='item')
 
     def __str__(self):
-        return self.nome
+        return self.name
 
 class Category(models.Model):
-    nome = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nome
+        return self.name
 
 class OrderModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)  
