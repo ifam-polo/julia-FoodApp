@@ -34,8 +34,23 @@
 </div>
 
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-
 <script>
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
 
   paypal.Button.render({
 
@@ -45,7 +60,7 @@
 
     client: {
 
-      sandbox: 'demo_sandbox_client_id',
+      sandbox: 'Af59ciVXA7z3rWVQ3m_AsKc99sfo-sjfSPCdws7d6cam2Yr06W78RRXPUpw_yxBjsmOknvC0V9fnE5x_',
 
       production: 'demo_production_client_id'
 
@@ -83,7 +98,7 @@
 
             total: '{{ price }}',
 
-            currency: 'USD'
+            currency: 'BRL'
 
           }
 
@@ -103,7 +118,15 @@
 
         $.ajax({
             type: 'POST',
-            url:"{%url 'order-confirmation' pk%}", 
+            url:"{% url 'order-confirmation' pk %}", 
+            beforeSend: function(request) {
+              request.setRequestHeader('X-CSRFToken', csrftoken)
+            },
+
+            data: JSON.stringify({'isPaid': true}),
+            sucess: function(data) {
+              window.location.href = '/payment-confirmation/'
+            }
         })
 
       });
